@@ -19,7 +19,10 @@ export default function RootLayout({
       <head>
         <title>LineUp</title>
       </head>
-      <body className={open.className}>{children}</body>
+      <body className={open.className}>
+        {children}
+      <div className="bg-circle"></div>
+      </body>
     </html>
   )
 }

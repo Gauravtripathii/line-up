@@ -1,7 +1,19 @@
+"use client";
+
 import "./home.css";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const registerButtonHandler = () => {
+    router.push('/register');
+  };
+  const loginButtonHandler = () => {
+    router.push('/login');
+  };
+
   return (
     <main className="flex h-screen p-10">
       <div className="img-container h-full flex content-center items-center">
@@ -27,11 +39,20 @@ export default function Home() {
           your academic journey feel just right.
         </p>
         <p className="text-3xl flex gap-10">
-          <button className="border-2 border-red-500 rounded bg-red-500 text-white font-bold p-4 hover:bg-white hover:text-red-500">Register</button>
-          <button className="border-2 border-gray-400 rounded bg-gray-400 p-4 hover:bg-white">Login</button>
+          <button
+            onClick={registerButtonHandler}
+            className="border-2 border-red-500 rounded bg-red-500 text-white font-bold p-4 hover:bg-white hover:text-red-500"
+          >
+            Register
+          </button>
+          <button
+            onClick={loginButtonHandler}
+            className="border-2 border-gray-400 rounded bg-gray-400 p-4 hover:bg-white"
+          >
+            Login
+          </button>
         </p>
       </div>
-      <div className="bg-circle"></div>
     </main>
   );
 }
