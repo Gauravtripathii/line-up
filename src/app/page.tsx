@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex h-screen">
+    <main className="flex h-screen p-10">
       <div className="img-container h-full flex content-center items-center">
         <Image
           src="/assets/home-img.png"
