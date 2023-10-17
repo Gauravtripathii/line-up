@@ -1,0 +1,9 @@
+.form-container {
+    background-color: #F2E982;
+}
+
+.form-container input:focus {
+    outline: none;
+    transition: 0.5s;
+    letter-spacing: 2px;
+}
