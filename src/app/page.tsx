@@ -15,7 +15,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex h-screen p-10">
+    <main className="flex h-full p-10">
       <div className="img-container h-full flex content-center items-center">
         <Image
           src="/assets/home-img.png"

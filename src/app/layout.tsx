@@ -19,7 +19,7 @@ export default function RootLayout({
       <head>
         <title>LineUp</title>
       </head>
-      <body className={open.className}>
+      <body className={`${open.className} h-screen`}>
         {children}
       <div className="bg-circle"></div>
       </body>
