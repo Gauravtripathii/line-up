@@ -5,8 +5,11 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
+  const router = useRouter();
+
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -23,6 +26,7 @@ export default function Register() {
         password: "",
       });
       toast.success("Signup Successfull!");
+      router.push('/login');
     } catch (error: any) {
       console.log(error.message);
     }

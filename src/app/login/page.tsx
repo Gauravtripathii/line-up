@@ -5,8 +5,11 @@ import Link from "next/link";
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function LoginPage() {
+  const router = useRouter();
+
   const [payload, setPayload] = useState({
     email: "",
     password: "",
@@ -20,6 +23,7 @@ export default function Login() {
         email: "",
         password: "",
       });
+      router.push("/courses");
     } catch (error: any) {
       toast.error("login failed", error.message);
     }
@@ -34,7 +38,7 @@ export default function Login() {
             placeholder="Email or Username"
             className="mb-5 p-2 w-full rounded"
             value={payload.email}
-            onChange={e => setPayload({...payload, email: e.target.value})}
+            onChange={(e) => setPayload({ ...payload, email: e.target.value })}
           />
         </p>
         <p>
@@ -43,7 +47,9 @@ export default function Login() {
             placeholder="Password"
             className="mb-7 p-2 w-full rounded"
             value={payload.password}
-            onChange={e => setPayload({...payload, password: e.target.value})}
+            onChange={(e) =>
+              setPayload({ ...payload, password: e.target.value })
+            }
           />
         </p>
         <p>
