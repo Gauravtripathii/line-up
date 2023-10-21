@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const styles = {
   formContainer: {
@@ -30,6 +31,8 @@ const times = [
 ];
 
 export default function AddCourse() {
+  const router = useRouter();
+
   const [payload, setPayload] = useState({
     code: "",
     name: "",
@@ -58,6 +61,7 @@ export default function AddCourse() {
         email,
       });
       toast.success(response.message);
+      router.push('/courses');
     } catch (error: any) {
       toast.error(error.message);
     }
