@@ -6,7 +6,7 @@ function CoursesPage() {
   const router = useRouter();
 
   const addCourse = () => {
-    router.push("/courses/add");
+    router.push("/courses/view");
   }
   return (
     <div className="h-full flex p-10">

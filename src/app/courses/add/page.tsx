@@ -13,6 +13,20 @@ const styles = {
   },
 };
 
+const days = ["mon", "tue", "wed", "thurs", "fri"];
+const times = [
+  "08-09",
+  "09-10",
+  "10-11",
+  "11-12",
+  "12-13",
+  "13-14",
+  "14-15",
+  "15-16",
+  "16-17",
+  "17-18",
+];
+
 export default function AddCourse() {
   const [payload, setPayload] = useState({
     code: "",
@@ -20,10 +34,15 @@ export default function AddCourse() {
     description: "",
     profileImage: "",
     faculty: "",
-    days: [] as string[],
+    schedule: [
+      {
+        day: "",
+        time: "",
+      },
+    ],
   });
   return (
-    <div className="h-full flex items-center justify-center">
+    <div className="h-100 flex items-center justify-center p-5">
       <div
         className="form-container p-10 rounded-2xl w-1/3"
         style={styles.formContainer}
@@ -72,58 +91,42 @@ export default function AddCourse() {
             }
           />
         </p>
-        <p className="flex flex-wrap items-center">
-          <input
-            type="checkbox"
-            name="monday"
-            id="monday"
-            onChange={() =>
-              setPayload({ ...payload, days: [...payload.days, "monday"] })
-            }
-            className="m-4"
-          />{" "}
-          Monday
-          <input
-            type="checkbox"
-            name="tuesday"
-            id="tuesday"
-            onChange={() =>
-              setPayload({ ...payload, days: [...payload.days, "tuesday"] })
-            }
-            className="m-4"
-          />{" "}
-          Tuesday
-          <input
-            type="checkbox"
-            name="wednessday"
-            id="wednessday"
-            onChange={() =>
-              setPayload({ ...payload, days: [...payload.days, "wednessday"] })
-            }
-            className="m-4"
-          />{" "}
-          Wednessday
-          <input
-            type="checkbox"
-            name="thursday"
-            id="thursday"
-            onChange={() =>
-              setPayload({ ...payload, days: [...payload.days, "thursday"] })
-            }
-            className="m-4"
-          />{" "}
-          Thursday
-          <input
-            type="checkbox"
-            name="friday"
-            id="friday"
-            onChange={() =>
-              setPayload({ ...payload, days: [...payload.days, "friday"] })
-            }
-            className="m-4"
-          />{" "}
-          Friday
-        </p>
+        <div className="flex flex-wrap items-center">
+          {days.map((day, index) => (
+            <div key={index}>
+              <span>
+                <input type="checkbox" name={day} id={day} /> {day} :
+              </span>
+              <div className="flex flex-wrap">
+                {times.map((time, index2) => (
+                  <span
+                    key={index2}
+                    className="mr-2 mb-2 border border-black p-1"
+                  >
+                    <input
+                      type="radio"
+                      name={time}
+                      id={time}
+                      onClick={() =>
+                        setPayload({
+                          ...payload,
+                          schedule: [
+                            ...payload.schedule,
+                            {
+                              day,
+                              time,
+                            },
+                          ],
+                        })
+                      }
+                    />{" "}
+                    {time}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
         <p>
           <button
             onClick={() => console.log(payload)}
