@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const styles = {
   formContainer: {
@@ -41,6 +43,25 @@ export default function AddCourse() {
       },
     ],
   });
+
+  const getAuthenticatedUserEmail = async () => {
+    const user = await axios.get("/api/auth/me");
+    return user.data.data.email;
+  };
+
+  const addCourse = async () => {
+    try {
+      const email = await getAuthenticatedUserEmail();
+      console.log({...payload, email})
+      const response: any = await axios.post("/api/courses/addCourse", {
+        ...payload,
+        email,
+      });
+      toast.success(response.message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="h-100 flex items-center justify-center p-5">
       <div
@@ -129,7 +150,7 @@ export default function AddCourse() {
         </div>
         <p>
           <button
-            onClick={() => console.log(payload)}
+            onClick={addCourse}
             className="border-2 border-red-500 rounded bg-red-500 text-white p-2 w-full font-bold text-xl hover:bg-inherit hover:text-red-500"
           >
             Add Course

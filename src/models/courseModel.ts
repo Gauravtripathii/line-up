@@ -16,11 +16,11 @@ const courseSchema = new mongoose.Schema({
   },
   profileImage: String,
   faculty: String,
-  day: [
+  schedule: [
     {
-      type: String,
-      required: true,
-    },
+      day: String,
+      time: String,
+    }
   ],
   enrolledUsers: [
     {
