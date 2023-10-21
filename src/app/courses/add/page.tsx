@@ -72,7 +72,7 @@ export default function AddCourse() {
         className="form-container p-10 rounded-2xl w-1/3"
         style={styles.formContainer}
       >
-        <h1 className="font-bold text-3xl mb-6">Log into your account</h1>
+        <h1 className="font-bold text-3xl mb-6">Add a new course</h1>
         <p>
           <input
             type="text"
