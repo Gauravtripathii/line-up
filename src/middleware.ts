@@ -21,7 +21,7 @@ export const config = {
         '/login',
         '/register',
         '/courses',
-        '/courses/:path'
+        '/courses/:path*'
     ]
 }
 
