@@ -4,9 +4,12 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 function CoursesPage() {
   const router = useRouter();
+
+  const [courseToBeRemoved, setCourseToBeRemoved] = useState("");
 
   const [courses, setCourses] = useState<
     { name: string; code: string; faculty: string; profileImage: string }[]
@@ -37,17 +40,33 @@ function CoursesPage() {
         .catch((error) => console.log("Error fetching email : ", error));
     }
   }, [id]);
+
+  const removeCourse = async (code: string, id: any) => {
+    try {
+      await axios.post("/api/courses/removeCourse", {userId: id, code});
+      toast.success("Course Removed!");
+    } catch (error) {
+      toast.error("An error occured!");
+    }
+  }
+
+  useEffect(() => {
+    if (courseToBeRemoved) removeCourse(courseToBeRemoved, id);
+  }, [courseToBeRemoved]);
   return (
     <div className="h-full flex p-10">
       <div className="courses-container flex flex-wrap gap-4">
         {courses.map((course, index) => (
           <div
             key={index}
-            className="course h-fit p-5 rounded-3xl flex flex-col items-center cursor-pointer hover:scale-110 transition ease-in-out"
+            className="course relative h-fit p-5 rounded-3xl flex flex-col items-center cursor-pointer hover:scale-110 transition ease-in-out"
             style={{
               backgroundColor: "#F2E982",
             }}
           >
+            <span onClick={() => setCourseToBeRemoved(course.code)} className="rounded-full bg-red-500 w-7 h-7 text-2xl flex items-center justify-center absolute top-2 right-2">
+              X
+            </span>
             <div className="img-container relative rounded-full border-black border-4 h-36 w-36">
               <Image
                 src={course.profileImage ? "" : "/assets/default.png"}
