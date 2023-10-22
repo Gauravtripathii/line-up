@@ -55,13 +55,13 @@ export default function AddCourse() {
   const addCourse = async () => {
     try {
       const email = await getAuthenticatedUserEmail();
-      console.log({...payload, email})
+      console.log({ ...payload, email });
       const response: any = await axios.post("/api/courses/addCourse", {
         ...payload,
         email,
       });
       toast.success(response.message);
-      router.push('/courses');
+      router.push("/courses");
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -130,8 +130,8 @@ export default function AddCourse() {
                   >
                     <input
                       type="radio"
-                      name={time}
-                      id={time}
+                      name={day + time}
+                      id={time + time}
                       onClick={() =>
                         setPayload({
                           ...payload,
@@ -158,6 +158,26 @@ export default function AddCourse() {
             className="border-2 border-red-500 rounded bg-red-500 text-white p-2 w-full font-bold text-xl hover:bg-inherit hover:text-red-500"
           >
             Add Course
+          </button>
+          <button
+            onClick={() =>
+              setPayload({
+                code: "",
+                name: "",
+                description: "",
+                profileImage: "",
+                faculty: "",
+                schedule: [
+                  {
+                    day: "",
+                    time: "",
+                  },
+                ],
+              })
+            }
+            className="border-2 border-red-500 rounded text-red-500 p-2 w-full font-bold text-xl hover:bg-red-500 hover:text-white mt-2"
+          >
+            Reset
           </button>
         </p>
       </div>
