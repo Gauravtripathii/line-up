@@ -38,6 +38,16 @@ export default function viewCourses() {
   const appendCourse = async (code: string) => {
     try {
       await axios.post("/api/courses/appendCourse", { email, code });
+      setCourses((prevCourses) =>
+        prevCourses.map((course) =>
+          course.code === code
+            ? {
+                ...course,
+                enrolledUsers: [...course.enrolledUsers, authenticatedUserId],
+              }
+            : course
+        )
+      );
       toast.success("Course Added!");
     } catch (error) {
       toast.error("There was an error!");
@@ -46,7 +56,6 @@ export default function viewCourses() {
 
   useEffect(() => {
     if (courseToBeUpdated) {
-      console.log(courseToBeUpdated);
       appendCourse(courseToBeUpdated);
     }
     if (!authenticatedUserId) getAuthenticatedUserId();
@@ -79,7 +88,7 @@ export default function viewCourses() {
             </div>
             <span className="font-semibold">{course.name.toUpperCase()}</span>
             <small>by {course.faculty.toLocaleUpperCase()}</small>
-            {(!course.enrolledUsers.includes(authenticatedUserId)) ? (
+            {!course.enrolledUsers.includes(authenticatedUserId) ? (
               <span
                 className="bg-red-500 w-full text-center rounded p-2"
                 onClick={() => setCourseToBeUpdated(course.code)}

@@ -44,6 +44,7 @@ function CoursesPage() {
   const removeCourse = async (code: string, id: any) => {
     try {
       await axios.post("/api/courses/removeCourse", {userId: id, code});
+      setCourses((prevCourses) => prevCourses.filter(course => course.code !== code));
       toast.success("Course Removed!");
     } catch (error) {
       toast.error("An error occured!");
