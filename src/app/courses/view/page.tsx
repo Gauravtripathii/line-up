@@ -4,20 +4,58 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function viewCourses() {
   const [courses, setCourses] = useState<
-    { name: string; code: string; faculty: string; profileImage: string }[]
+    {
+      name: string;
+      code: string;
+      faculty: string;
+      profileImage: string;
+      enrolledUsers: string[];
+    }[]
   >([]);
+
+  const [courseToBeUpdated, setCourseToBeUpdated] = useState("");
+  const [authenticatedUserId, setAuthenticatedUserId] = useState("");
+  const [email, setEmail] = useState("");
 
   const getAllUsers = async () => {
     const response = await axios.get("/api/courses/getAllCourses");
     return response.data.courses;
   };
+  const getAuthenticatedUserEmail = async () => {
+    const user = await axios.get("/api/auth/me");
+    return user.data.data.email;
+  };
+  const getAuthenticatedUserId = async () => {
+    const user = await axios.get("/api/auth/me");
+    console.log(user.data.data._id);
+    setAuthenticatedUserId(user.data.data._id);
+  };
+
+  const appendCourse = async (code: string) => {
+    try {
+      await axios.post("/api/courses/appendCourse", { email, code });
+      toast.success("Course Added!");
+    } catch (error) {
+      toast.error("There was an error!");
+    }
+  };
+
+  useEffect(() => {
+    if (courseToBeUpdated) {
+      console.log(courseToBeUpdated);
+      appendCourse(courseToBeUpdated);
+    }
+    if (!authenticatedUserId) getAuthenticatedUserId();
+  }, [courseToBeUpdated, authenticatedUserId]);
 
   useEffect(() => {
     getAllUsers().then((response) => setCourses(response));
-  });
+    getAuthenticatedUserEmail().then((response) => setEmail(response));
+  }, []);
 
   return (
     <div className="h-full flex p-10">
@@ -25,7 +63,7 @@ export default function viewCourses() {
         {courses!.map((course, index) => (
           <div
             key={index}
-            className="course h-fit p-5 rounded-3xl flex flex-col items-center cursor-pointer hover:scale-110 transition ease-in-out"
+            className="course h-fit p-5 rounded-3xl flex flex-col items-center justify-between cursor-pointer hover:scale-110 transition ease-in-out"
             style={{
               backgroundColor: "#F2E982",
             }}
@@ -41,6 +79,16 @@ export default function viewCourses() {
             </div>
             <span className="font-semibold">{course.name.toUpperCase()}</span>
             <small>by {course.faculty.toLocaleUpperCase()}</small>
+            {(!course.enrolledUsers.includes(authenticatedUserId)) ? (
+              <span
+                className="bg-red-500 w-full text-center rounded p-2"
+                onClick={() => setCourseToBeUpdated(course.code)}
+              >
+                add this course
+              </span>
+            ) : (
+              <span>already added!</span>
+            )}
           </div>
         ))}
         <Link
