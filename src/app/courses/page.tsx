@@ -43,13 +43,15 @@ function CoursesPage() {
 
   const removeCourse = async (code: string, id: any) => {
     try {
-      await axios.post("/api/courses/removeCourse", {userId: id, code});
-      setCourses((prevCourses) => prevCourses.filter(course => course.code !== code));
+      await axios.post("/api/courses/removeCourse", { userId: id, code });
+      setCourses((prevCourses) =>
+        prevCourses.filter((course) => course.code !== code)
+      );
       toast.success("Course Removed!");
     } catch (error) {
       toast.error("An error occured!");
     }
-  }
+  };
 
   useEffect(() => {
     if (courseToBeRemoved) removeCourse(courseToBeRemoved, id);
@@ -65,10 +67,16 @@ function CoursesPage() {
               backgroundColor: "#F2E982",
             }}
           >
-            <span onClick={() => setCourseToBeRemoved(course.code)} className="rounded-full bg-red-500 w-7 h-7 text-2xl flex items-center justify-center absolute top-2 right-2">
+            <span
+              onClick={() => setCourseToBeRemoved(course.code)}
+              className="rounded-full bg-red-500 w-7 h-7 text-2xl flex items-center justify-center absolute top-2 right-2"
+            >
               X
             </span>
-            <div className="img-container relative rounded-full border-black border-4 h-36 w-36">
+            <div
+              className="img-container relative rounded-full border-black border-4 h-36 w-36"
+              onClick={() => router.push(`/courses/timetable/${course.code}`)}
+            >
               <Image
                 src={course.profileImage ? "" : "/assets/default.png"}
                 alt="course image"
