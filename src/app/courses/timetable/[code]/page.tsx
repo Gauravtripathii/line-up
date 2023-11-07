@@ -10,76 +10,82 @@ export default function TimeTablePage({ params }: any) {
     description: "",
     name: "",
     faculty: "",
-    schedule: "",
+    schedule: [
+      {
+        day: "",
+        time: "",
+        _id: "6533739dd872ac4379b9bd52"
+      }
+    ]
   });
+
+  const days = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri'];
+  const times = ['08-09', '09-10', '10-11', '11-12', '12-13', '13-14', '14-15', '15-16', '16-17', '17-18'];
 
   const getCourseByCode = async () => {
     const response = await axios.post("/api/courses/getCourse", {
       code: params.code,
     });
-    console.log(response.data.course);
     return response.data.course;
   };
 
   useEffect(() => {
     if (!course.code) {
-      console.log(params.code, course);
       getCourseByCode()
         .then((response) => setCourse(response))
         .catch((error) =>
           toast.error(
-            "An error occurred whil fetching course information",
+            "An error occurred while fetching course information",
             error.message
           )
         );
     }
-  }, []);
+    console.log(course.schedule)
+  }, [course]);
+
   return (
-    <div className="flex items-center justify-center w-screen h-screen">
-      <div className="table-container flex flex-col gap-5 border">
-        <p className="flex gap-5 text-2xl font-bold items-center justify-center">
-          <span></span>
-          <span>MON</span>
-          <span>TUE</span>
-          <span>WED</span>
-          <span>THU</span>
-          <span>FRI</span>
-        </p>
-        <div className="time-container border">
-          <div className="time-lable flex flex-col">
-            <p>
-              <span>08-09</span>
-            </p>
-            <p>
-              <span>09-10</span>
-            </p>
-            <p>
-              <span>10-11</span>
-            </p>
-            <p>
-              <span>11-12</span>
-            </p>
-            <p>
-              <span>12-13</span>
-            </p>
-            <p>
-              <span>13-14</span>
-            </p>
-            <p>
-              <span>14-15</span>
-            </p>
-            <p>
-              <span>15-16</span>
-            </p>
-            <p>
-              <span>16-17</span>
-            </p>
-            <p>
-              <span>17-18</span>
-            </p>
+    <div className="h-full flex flex-col justify-center p-10">
+      <h2 className="text-3xl text-center font-bold mb-4">Course Timetable</h2>
+      <div className="grid grid-cols-6 gap-1">
+        <div className="col-span-1"></div>
+        {days.map((day) => (
+          <div
+            key={day}
+            className="col-span-1 text-center p-2 border border-gray-200"
+          >
+            {day}
           </div>
-        </div>
+        ))}
       </div>
+      {times.map((timeSlot, index) => (
+        <div key={index} className="grid grid-cols-6 gap-1">
+          <div className="col-span-1 text-right p-2 border border-gray-200">
+            {timeSlot}
+          </div>
+          {days.map((day, dayIndex) => (
+            <div
+              key={dayIndex}
+              className={`col-span-1 p-2 border border-gray-200 text-center ${
+                isCourseScheduled(day.toLowerCase(), timeSlot) ? "bg-green-400" : "bg-red-400"
+              }`}
+            >
+              {course.schedule &&
+                isCourseScheduled(day.toLowerCase(), timeSlot) && (
+                  course.name
+                )}
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
+
+  function isCourseScheduled(courseDay: string, courseTime: string) {
+    return course.schedule.some((scheduled) => {
+      return (
+        scheduled.day.toLowerCase() === courseDay.toLowerCase() &&
+        scheduled.time === courseTime
+      );
+    });
+  }
 }
