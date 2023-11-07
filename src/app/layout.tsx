@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 
+import Navigation from "./components/Navigation";
+
 const open = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,6 +24,7 @@ export default function RootLayout({
       </head>
       <body className={`${open.className} h-screen`}>
         <Toaster />
+        <Navigation />
         {children}
         <div className="bg-circle"></div>
       </body>
